@@ -156,7 +156,7 @@ for my $path ( split /:/, $ENV{PATH} ){
 die "bedtool is not available, please install or provide full path\n" unless ( -f $BEDTOOLS );
 
 
-if($run_from ne 'round1' and $run_from ne 'Round1' and $run_from ne 'Merge1' and $run_from ne 'Round2' and $run_from ne 'Round2' and $run_from ne 'merge2' and $run_from ne 'Merge2' and $run_from ne 'split' and $run_from ne 'SPLIT' ){
+if($run_from ne 'round1' and $run_from ne 'Round1' and $run_from ne 'Merge1' and $run_from ne 'Round2' and $run_from ne 'Round2' and $run_from ne 'merge2' and $run_from ne 'Merge2' and $run_from ne 'split' and $run_from ne 'Split' ){
 	print STDERR "###########################\nError Occured !!!!!!!! \n\n"; 
 	print STDERR "Please choose correct Start Point : Valid options are Round1, Merge1, Round2 and Merge2\n###########################\n\n"; 
 	verbose();
@@ -413,11 +413,13 @@ if(lc($run_from) eq 'split' or $run_from eq 'SPLIT' or $step_check = 'complete')
 	
 	open(MEM,"$name.ME.SepSample.list");
 	while(<MEM>){
-		chomp $_; 
-		my $me_file = $_;
+		chomp $_;
+		my @s = split(/\t/,$_); 
+		my $original_file = $s[0];
+		my $me_file = $s[1];
 		$me_file =~ s{\.[^.]+$}{}; 
 		system "printf \"#CHROM\tStart\tEnd\tSample\tME_Per_Merged_Window\tNum_Window\tMin_ME\tMax_ME\tMean_ME\n\" > $me_file.merged.bed";
-		system "bedtools merge -i $me_file.bed -c 4,5,5,5,5,5 -o distinct,collapse,count,min,max,mean -delim \"|\" >> $me_file.merged.bed";
+		system "bedtools intersect -a $me_file.bed -b $original_file -c | bedtools merge -i - -c 4,9,9,9,9,9 -o distinct,collapse,count,min,max,mean -delim \"|\" >> $me_file.merged.bed";
 		# FilterRound3(input,output,number of me to filer)
 		FilterRound3("$me_file.merged.bed","$me_file.merged.filter.bed",2);
 		
@@ -531,7 +533,7 @@ sub PostMergeCasesbgroundFilter {
 sub PostMergeCasesOnlyFilter {
 
 	my $in = $_[0];
-	my $out = $_[5] // "$name.Round1_merged_filtered.bed";
+	my $out = $_[1] // "$name.Round1_merged_filtered.bed";
 	
 	open(IN,$in); 	
 	open(OUT,"> $out");
@@ -714,7 +716,7 @@ sub SplitBySample{
 		open(OUTPUT, ">> $name.work/$outFile.MEM.sample.bed"); 		
 		print OUTPUT "$l\n"; 
 		if(!(exists($hash{$outFile}))){
-			print OUTPUT2 "$name.work/$outFile.MEM.sample.bed\n"; 
+			print OUTPUT2 "$s[$col]\t$name.work/$outFile.MEM.sample.bed\n"; 
 			$hash{$outFile} = $outFile; 
 		}
 	}
