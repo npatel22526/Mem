@@ -514,8 +514,7 @@ sub PostMergeCasesbgroundFilter {
 	while(<IN>){
 		chomp $_; 
 		my @s = split(/\t/,$_);
-		if($s[7] > $filter_cases_ME)
-		{
+		if($s[7] > $filter_cases_ME){
 			if($s[12] eq '.'){
 				print OUT "$_\n";
 			} 
@@ -705,8 +704,7 @@ sub SplitBySample{
 	system "rm -f $name.work/*.MEM.sample.bed"; 
 	system "rm -f $name.ME.SepSample.list"; 
 	open(OUTPUT2, ">> $name.ME.SepSample.list"); 
-	while(<IN>)
-	{
+	while(<IN>){
 		chomp $_; 
 		my $l = $_; 
 		my @s  = split(/\t/,$l); 
@@ -731,8 +729,7 @@ sub FilterRound3{
 	open(INR3,$file3); 
 	system "rm -f $out3"; 
 	open(OUTPUT3, ">> $out3"); 
-	while(<INR3>)
-	{
+	while(<INR3>){
 		chomp $_; 
 		my $l = $_; 
 		if($l !~ /#CHROM/){
