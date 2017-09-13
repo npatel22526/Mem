@@ -90,7 +90,7 @@ Arguments:
 	-c, --cases			List of Cases Files [Require if run_from is not provided]
 	-g, --genome			Genome file containing start and end of autosomal chromosome in b37 version [required, provided along with tool]
 	-n, --name			Name to attched to intermediate File
-	-r, --run_from			Round1 analysis for intermediate steps, available options are Round1, Merge1, Round2, Merge2
+	-r, --run_from			Round1 analysis for intermediate steps, available options are Round1, Merge1, Round2, Merge2, Split, split
 	-s, --slide 			Size of slide [Required][Default 100000 ]
 	-w, --window			Size of window [Required][Default 2000000 ]
 	-t, --tool			Full path to bedtools [required] [Default : bedtools]
@@ -156,7 +156,7 @@ for my $path ( split /:/, $ENV{PATH} ){
 die "bedtool is not available, please install or provide full path\n" unless ( -f $BEDTOOLS );
 
 
-if($run_from ne 'round1' and $run_from ne 'Round1' and $run_from ne 'Merge1' and $run_from ne 'Round2' and $run_from ne 'Round2' and $run_from ne 'merge2' and $run_from ne 'Merge2' and $run_from ne 'split' and $run_from ne 'Split' ){
+if($run_from ne 'round1' and $run_from ne 'Round1' and $run_from ne 'Merge1' and $run_from ne 'Round2' and $run_from ne 'Round2' and $run_from ne 'merge2' and $run_from ne 'Merge2' and $run_from ne 'split' and $run_from ne 'SPLIT' ){
 	print STDERR "###########################\nError Occured !!!!!!!! \n\n"; 
 	print STDERR "Please choose correct Start Point : Valid options are Round1, Merge1, Round2 and Merge2\n###########################\n\n"; 
 	verbose();
@@ -422,7 +422,6 @@ if(lc($run_from) eq 'split' or $run_from eq 'SPLIT' or $step_check = 'complete')
 		system "bedtools intersect -a $me_file.bed -b $original_file -c | bedtools merge -i - -c 4,9,9,9,9,9 -o distinct,collapse,count,min,max,mean -delim \"|\" >> $me_file.merged.bed";
 		# FilterRound3(input,output,number of me to filer)
 		FilterRound3("$me_file.merged.bed","$me_file.merged.filter.bed",2);
-		
 	}
 	close (MEM); 
 }
@@ -515,8 +514,7 @@ sub PostMergeCasesbgroundFilter {
 	while(<IN>){
 		chomp $_; 
 		my @s = split(/\t/,$_);
-		if($s[7] > $filter_cases_ME)
-		{
+		if($s[7] > $filter_cases_ME){
 			if($s[12] eq '.'){
 				print OUT "$_\n";
 			} 
@@ -706,8 +704,7 @@ sub SplitBySample{
 	system "rm -f $name.work/*.MEM.sample.bed"; 
 	system "rm -f $name.ME.SepSample.list"; 
 	open(OUTPUT2, ">> $name.ME.SepSample.list"); 
-	while(<IN>)
-	{
+	while(<IN>){
 		chomp $_; 
 		my $l = $_; 
 		my @s  = split(/\t/,$l); 
@@ -732,13 +729,12 @@ sub FilterRound3{
 	open(INR3,$file3); 
 	system "rm -f $out3"; 
 	open(OUTPUT3, ">> $out3"); 
-	while(<INR3>)
-	{
+	while(<INR3>){
 		chomp $_; 
 		my $l = $_; 
 		if($l !~ /#CHROM/){
 			my @s  = split(/\t/,$l); 
-			if($s[8] >= $filter){
+			if($s[8] > $filter){
 				print OUTPUT3 "$l\n"; 
 			}
 		}
