@@ -1,6 +1,10 @@
 # MEM
 ### MEM : Mendelian Error Method to rapidly detect deletions in whole exome and genome trio sequence data
 
+## Paper Published
+### Robust identification of deletions in exome and genome sequence data based on clustering of Mendelian errors
+### http://onlinelibrary.wiley.com/doi/10.1002/humu.23419/full
+
 #### Step 1: Call SNVs
 	- Variant calling must be performed with one of the following methods
 		1. Joint calling for the trio
