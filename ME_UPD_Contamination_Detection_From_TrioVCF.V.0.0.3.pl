@@ -166,7 +166,7 @@ while(<IN>){
 				my $isMulti= scalar@REF;
 
 				## IF it's not Multi Allelic check if it is an INDEL
-				if(!($child_GT eq '0/0' and $dad_GT eq '0/0' and $mom_GT eq '0/0') and !($child_GT eq '0/0' and $dad_GT eq './.' and $mom_GT eq '0/0') and !($child_GT eq '0/0' and $dad_GT eq '0/0' and $mom_GT eq './.') and !($child_GT eq '0/0' and $dad_GT eq './.' and $mom_GT eq './.')){
+				if($isMulti == 1 and !($child_GT eq '0/0' and $dad_GT eq '0/0' and $mom_GT eq '0/0') and !($child_GT eq '0/0' and $dad_GT eq './.' and $mom_GT eq '0/0') and !($child_GT eq '0/0' and $dad_GT eq '0/0' and $mom_GT eq './.') and !($child_GT eq '0/0' and $dad_GT eq './.' and $mom_GT eq './.')){
 					if((length($s[4]) < 2 and length($s[3]) < 2 ) or $type ne 'SNP'){	#if4 #### Look of simple Denovo not complex ones also exclude Indels
 
 						## Ratio if the coverage is non Zero 
