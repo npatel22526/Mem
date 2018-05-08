@@ -9,6 +9,7 @@
 	- Variant calling must be performed with one of the following methods
 		1. Joint calling for the trio
 		2. Joint genotyping (utilizing gVCFs) followed by VCF merge
+		3. Left normalize VCF file to utilize all possible SNPs, else multi-allelic SNPs will be excluded
 		
 #### Step 2: Extract Mendelian Errors (MEs) 
 	- Script provided: ME_UPD_Contamination_Detection_From_TrioVCF.V.0.0.3.pl
