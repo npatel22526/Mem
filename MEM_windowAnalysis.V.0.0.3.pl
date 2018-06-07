@@ -422,6 +422,7 @@ if(lc($run_from) eq 'split' or $run_from eq 'SPLIT' or $step_check = 'complete')
 		system "bedtools intersect -a $me_file.bed -b $original_file -c | bedtools merge -i - -c 4,9,9,9,9,9 -o distinct,collapse,count,min,max,mean -delim \"|\" >> $me_file.merged.bed";
 		# FilterRound3(input,output,number of me to filer)
 		FilterRound3("$me_file.merged.bed","$me_file.merged.filter.bed",2);
+		system "sed  's/chr//g' $original_file | bedtools intersect -a $me_file.merged.filter.bed -b - -wa -wb |  cut -f1-4,10-12  | bedtools groupby -c 4,5,6,7,7 -o distinct,distinct,min,max,count | awk '{print $5,$6,$7,$8}' OFS=\"\t\" > $me_file.trim.merged.filter.bed";
 	}
 	close (MEM); 
 }
