@@ -29,6 +29,9 @@
 		-G, --minGQ		Minimum genotype quality [Default 30]
 		-h, --help		Usage summary
 		-v, --verbose		Detailed Usage Information
+##### Note : Pedigree file should only contains proband's information and must be tab sepetrated. The sample names in pedigree file must exactly match the one in VCFs. It will use first 4 columns of the file and the rest will be ignored.
+	Family01	Child01	Father01	Mother01
+	Family02	Child02	Father02	Mother02
 
 #### Step 3: Filter MEs
 	- Read depth, Genotype quality and B-allele frequency filters are built into extraction script
